@@ -1,1 +1,10 @@
+# requirements.txt
 
+# Google SDK for AI Agents Course
+google-genai 
+
+# Pydantic is often used for data validation (like A2A Protocol schemas)
+pydantic
+
+# Used for loading the .env file securely
+python-dotenv
