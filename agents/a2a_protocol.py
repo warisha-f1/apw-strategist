@@ -1,5 +1,3 @@
-# agents/a2a_protocol.py
-
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Any, Optional

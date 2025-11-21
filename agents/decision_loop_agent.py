@@ -19,7 +19,7 @@ def run_optimization_loop(client: genai.Client, topic: str) -> Dict[str, Any]:
     best_lap = 0
     max_delta = -float('inf')
     
-    print("\n🔄 Loop Agent: Starting Optimization...")
+    print("\n Loop Agent: Starting Optimization...")
     print(f"   Searching for optimal pit lap between Lap {START_LAP} and Lap {END_LAP} using {TIRE_TYPE} tires.")
     
     # 2. The Core Loop (Fulfills the "Loop Agents" Requirement)
@@ -33,7 +33,7 @@ def run_optimization_loop(client: genai.Client, topic: str) -> Dict[str, Any]:
                 tire_type=TIRE_TYPE
             )
         except Exception as e:
-            print(f"   ⚠️ Loop failed to execute simulation for Lap {lap}. Error: {e}")
+            print(f" Loop failed to execute simulation for Lap {lap}. Error: {e}")
             continue
 
         # B. Decision/Evaluation (Finding the Maximum Gain)
@@ -44,7 +44,7 @@ def run_optimization_loop(client: genai.Client, topic: str) -> Dict[str, Any]:
         else:
             print(f"   -> Lap {lap}: Delta = {current_delta:.2f}s.")
             
-    print(f"\n✨ Loop Agent Complete: Optimal Pit Lap Found: {best_lap} (Gain: {max_delta:.2f}s)")
+    print(f"\n Loop Agent Complete: Optimal Pit Lap Found: {best_lap} (Gain: {max_delta:.2f}s)")
 
     # 3. Final LLM Reasoning
     prompt = (
@@ -54,9 +54,8 @@ def run_optimization_loop(client: genai.Client, topic: str) -> Dict[str, Any]:
         f"that specific lap is better than the others."
     )
     
-   # agents/decision_loop_agent.py (From line 55 onwards)
 
-    print(f"\n✨ Loop Agent Complete: Optimal Pit Lap Found: {best_lap} (Gain: {max_delta:.2f}s)")
+    print(f"\n Loop Agent Complete: Optimal Pit Lap Found: {best_lap} (Gain: {max_delta:.2f}s)")
 
     # 3. Final LLM Reasoning (Telling the user the result of the optimization)
     
@@ -79,7 +78,7 @@ def run_optimization_loop(client: genai.Client, topic: str) -> Dict[str, Any]:
         
     except Exception as e:
         # If the server is down (503), print a warning but don't crash
-        print(f"\n⚠️ API Warning: Could not get final LLM summary due to server error ({e}). Returning raw result.")
+        print(f"\n API Warning: Could not get final LLM summary due to server error ({e}). Returning raw result.")
         
     # 4. Return the result in a structured format for saving to memory
     return {

@@ -15,11 +15,11 @@ from agents.a2a_protocol import A2AMessage
 
 # Configure a robust logger that outputs to a file (for tracing) and the console
 logging.basicConfig(
-    level=logging.INFO, # Sets the minimum level to capture
+    level=logging.INFO, 
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("agent_trace.log", mode='w'), # Logs to a file
-        logging.StreamHandler() # Logs to the console
+        logging.FileHandler("agent_trace.log", mode='w'), 
+        logging.StreamHandler() 
     ]
 )
 # Create a logger instance for the main application flow
@@ -32,7 +32,7 @@ def display_history():
     """Retrieves and prints all strategies from the database."""
     strategies = get_all_strategies_from_db()
     
-    # We will still print the history, but the surrounding actions are logged.
+    # print the history, but the surrounding actions are logged.
     print("\n--- Strategy History (Long Term Memory) ---")
     if not strategies:
         print("No strategies saved yet.")
@@ -122,7 +122,7 @@ def run_f1_strategist(client: genai.Client, prompt: str):
     
     while response.function_calls:
         logger.info("AGENT FLOW: Simulation Agent decided to use the Custom Tool.")
-        print("🤖 Simulation Agent: Decided to use the Custom Tool...")
+        print("Simulation Agent: Decided to use the Custom Tool...")
         
         function_name = response.function_calls[0].name
         tool_args = dict(response.function_calls[0].args)
@@ -135,7 +135,7 @@ def run_f1_strategist(client: genai.Client, prompt: str):
                 print(f"   -> Simulation result: {tool_output:.2f} seconds gain/loss.")
             except TypeError as e:
                  logger.error(f"TOOL ERROR: Missing or invalid argument in tool call: {e}")
-                 print(f"⚠️ Error executing tool: Missing or invalid argument in tool call: {e}")
+                 print(f"Error executing tool: Missing or invalid argument in tool call: {e}")
                  tool_output = None 
                  break
             
@@ -175,7 +175,7 @@ def run_f1_strategist(client: genai.Client, prompt: str):
         )
         last_id = save_strategy_to_db(message.user_input, message.payload)
         logger.info(f"A2A PROTOCOL: SimulationAgent sent message to Memory. ID: {last_id}, Delta: {tool_output:.2f}")
-        print(f"\n💾 Memory Agent: Strategy saved to database with ID: {last_id}")
+        print(f"\n Memory Agent: Strategy saved to database with ID: {last_id}")
         # --- END A2A Protocol Implementation ---
 
 
@@ -193,17 +193,17 @@ if __name__ == "__main__":
     initialize_db() 
     
     logger.info("SYSTEM STARTUP: F1 Strategist System Initialized.")
-    print("✅ F1 Strategist System Initialized! (Multi-Agent Running)")
+    print("F1 Strategist System Initialized! (Multi-Agent Running)")
     print("Commands: [exit], [history], [delete <ID>], or ask for a pit strategy.")
     
     while True:
-        user_input = input("\n🏎️ Your Strategy Question: ").strip()
+        user_input = input("\n Your Strategy Question: ").strip()
         
         if not user_input:
             continue
 
         # --- STEP 1: Intent Agent (Sequential Agent 1) ---
-        print("\n🚦 Intent Agent: Classifying user request...")
+        print("\n Intent Agent: Classifying user request...")
         logger.info(f"INTENT: Classifying input: '{user_input}'")
         
         try:
@@ -217,7 +217,7 @@ if __name__ == "__main__":
             
         except Exception as e:
             logger.error(f"INTENT AGENT CRITICAL FAILURE: {e}")
-            print(f"⚠️ Critical Error during intent classification. Retrying input as NEW_STRATEGY. Error: {e}")
+            print(f" Critical Error during intent classification. Retrying input as NEW_STRATEGY. Error: {e}")
             intent = 'NEW_STRATEGY'
             argument = None
 
@@ -226,7 +226,7 @@ if __name__ == "__main__":
         
         if intent == 'EXIT':
             logger.info("ACTION: Exit command received. System shutting down.")
-            print("Race finished. Goodbye! 👋")
+            print("Race finished. Goodbye!")
             break
         
         # --- ROBUST HISTORY LOGIC ---
@@ -242,7 +242,7 @@ if __name__ == "__main__":
             parts = user_input.split()
             if len(parts) < 2 or not parts[1].isdigit():
                 logger.warning("VALIDATION ERROR: Delete command missing valid ID.")
-                print("❌ Usage Error: The delete command must be followed by a valid ID (e.g., delete 2).")
+                print("Usage Error: The delete command must be followed by a valid ID (e.g., delete 2).")
                 display_history()
             else:
                 try:
@@ -261,20 +261,20 @@ if __name__ == "__main__":
                     
                     if rows > 0:
                         logger.info(f"ACTION: Entry deleted from memory. ID: {strategy_id}")
-                        print(f"🗑️ Entry with ID {strategy_id} successfully deleted from memory.")
+                        print(f"Entry with ID {strategy_id} successfully deleted from memory.")
                     else:
                         logger.warning(f"DATABASE ERROR: Attempted to delete non-existent ID: {strategy_id}")
-                        print(f"⚠️ Strategy ID {strategy_id} not found.")
+                        print(f"Strategy ID {strategy_id} not found.")
                 except ValueError:
                     logger.error("VALIDATION ERROR: Delete ID was not a number.")
-                    print("❌ Error: ID must be a number.")
+                    print("Error: ID must be a number.")
         # --- END ROBUST DELETE LOGIC ---
         
         # --- ROBUST OPTIMIZE LOGIC ---
         elif intent == 'OPTIMIZE_STRATEGY' or 'optimize' in user_input.lower():
             
             logger.info("DISPATCH: Calling Loop Agent (Optimization).")
-            print("\n🔄 Calling Loop Agent for Optimization...")
+            print("\n Calling Loop Agent for Optimization...")
             optimization_result = run_optimization_loop(client, user_input)
             
             # Save optimization result and display LLM summary
@@ -291,7 +291,7 @@ if __name__ == "__main__":
             )
             last_id = save_strategy_to_db(message.user_input, message.payload)
             logger.info(f"A2A PROTOCOL: LoopAgent sent message to Memory. ID: {last_id}")
-            print(f"\n💾 Memory Agent: Optimization saved to database with ID: {last_id}")
+            print(f"\n Memory Agent: Optimization saved to database with ID: {last_id}")
             # --- END A2A Protocol Implementation ---
 
         # --- END ROBUST OPTIMIZE LOGIC ---
@@ -301,4 +301,4 @@ if __name__ == "__main__":
             
         else:
             logger.warning(f"DISPATCH ERROR: Input '{user_input}' classified as OTHER and not handled.")
-            print("🤔 The system did not recognize the command. Please try again or ask a clear strategy question.")
+            print("The system did not recognize the command. Please try again or ask a clear strategy question.")

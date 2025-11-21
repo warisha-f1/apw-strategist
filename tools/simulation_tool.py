@@ -1,5 +1,3 @@
-# tools/simulation_tool.py
-
 def calculate_race_delta(strategy_name: str, pit_lap: int, tire_type: str) -> float:
     """
     Custom Tool: Simulates a potential pit stop strategy and calculates the time 

@@ -1,5 +1,3 @@
-# agents/intent_agent.py
-
 from google import genai
 from pydantic import BaseModel, Field
 import json
@@ -15,7 +13,7 @@ logger = logging.getLogger('APW-STRATEGIST')
 class IntentType(str, Enum): 
     """Defines the restricted intent choices for Pydantic."""
     NEW_STRATEGY = "NEW_STRATEGY"
-    REVIEW_HISTORY = "REVIEW_HISTORY" # <-- INTENT NAME REMAINS THE SAME FOR CONSISTENCY
+    REVIEW_HISTORY = "REVIEW_HISTORY" # INTENT NAME REMAINS THE SAME FOR CONSISTENCY
     DELETE_ENTRY = "DELETE_ENTRY"
     OPTIMIZE_STRATEGY = "OPTIMIZE_STRATEGY" 
     EXIT = "EXIT"

@@ -1,5 +1,3 @@
-# database.py
-
 import sqlite3
 import os
 from datetime import datetime
