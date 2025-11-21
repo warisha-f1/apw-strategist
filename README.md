@@ -57,3 +57,19 @@ Key Commands:
 
 5. Agent Evaluation:
 The system's integrity is verified via (python -m unittest discover tests).
+
+EXAMPLE:
+1. Single Strategy Check (Tests LLM and Custom Tool):
+Use this command to verify the Intent Agent correctly identifies a NEW_STRATEGY and the Simulation Agent successfully calls the Custom Tool once for a deterministic calculation.
+
+Command to use: "If our current tire life is good, what is the time gain or loss of pitting on lap 25 for a new set of Hard tires?"
+
+2. Full Optimization Check (Tests Loop Agent):
+This is the most complex test. It verifies the Intent Agent classifies OPTIMIZE_STRATEGY and triggers the Loop Agent to run an iterative loop that calls the Custom Tool multiple times (e.g., Laps 15-35) to find the single best pit lap.
+
+Command to use: "Run a full optimization search to find the best possible pit stop lap using the Medium tires."
+
+3. Memory & Context Check (Tests Context Compaction):
+This question ensures the system can correctly retrieve the results from the previous two runs (which are saved in Long-Term Memory) and use them to inform a new, final decision, proving your Context Compaction works.
+
+Command to use: "Review my last two strategy attempts and tell me which strategy type (single pit stop or the optimized one) is currently showing the best time gain."
